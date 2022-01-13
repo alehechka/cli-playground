@@ -1,25 +1,31 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.verbose = void 0;
 const commander_1 = require("commander");
-commander_1.program
-    .option('-h, --hello <person>', 'says hello to user')
-    .addOption(new commander_1.Option('-d, --drink <size>', 'drink size').choices(['small', 'medium', 'large']));
-function makeStartCommand() {
-    const start = commander_1.program.command('start <first> [second]');
-    start.action((first, second) => {
-        console.log({ first, second, message: 'start command called' });
+commander_1.program.option('--verbose', 'verbose output');
+const options = commander_1.program.opts();
+const verbose = (message) => {
+    if (options.verbose) {
+        console.log(message);
+    }
+};
+exports.verbose = verbose;
+const makeUpdateCommand = () => {
+    const update = commander_1.program.command('update <repo>');
+    update.action((repo) => {
+        (0, exports.verbose)(`Verbose updating ${repo}`);
+        console.log(`Updating ${repo}`);
     });
-    return start;
-}
-function makeBuildCommand() {
-    const build = commander_1.program.command('build <something> [different]');
-    const options = commander_1.program.opts();
-    build.action((something, different) => {
-        console.log({ something, different, message: 'build command called', options });
+    return update;
+};
+const makeReleaseCommand = () => {
+    const release = commander_1.program.command('release <version>');
+    release.action((version) => {
+        (0, exports.verbose)(`Verbose releasing ${version}`);
+        console.log(`Releasing ${version}`);
     });
-    return build;
-}
-commander_1.program.addCommand(makeStartCommand());
-commander_1.program.addCommand(makeBuildCommand());
-commander_1.program.parse(process.argv);
+    return release;
+};
+commander_1.program.addCommand(makeUpdateCommand());
+commander_1.program.addCommand(makeReleaseCommand());
 exports.default = commander_1.program;

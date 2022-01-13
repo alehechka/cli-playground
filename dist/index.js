@@ -4,6 +4,5 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const cli_1 = __importDefault(require("./cli"));
-const options = cli_1.default.opts();
-const args = cli_1.default.args;
-console.log({ options, args });
+cli_1.default.version('0.0.1');
+cli_1.default.parse();
